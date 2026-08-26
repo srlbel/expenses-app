@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { ExpenseService } from "../../application/expense.service";
 import { ExpenseRepository } from "../../infraestructure/query/expense.repository";
-import { db } from "../../infraestructure/database/db";
+import { db } from "../../infraestructure/drizzle/db";
 import * as Expense from "../../domain/expense/expense";
 
 const repository = new ExpenseRepository(db);

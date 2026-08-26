@@ -4,7 +4,7 @@ import { CONFIG } from "./src/config";
 export default defineConfig({
     out: "./drizzle",
     dialect: "sqlite",
-    schema: "src/infraestructure/database/schema",
+    schema: "src/infraestructure/drizzle/schema",
     dbCredentials: {
         url: CONFIG.database_file,
     }

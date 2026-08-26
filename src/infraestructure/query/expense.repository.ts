@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import { Expense } from "../../domain/expense/expense";
 import { ExpenseInterface } from "../../domain/expense/expense.interface";
-import { db } from "../database/db";
-import { expense } from "../database/schema/expense";
+import { db } from "../drizzle/db";
+import { expense } from "../drizzle/schema/expense";
 
 export class ExpenseRepository implements ExpenseInterface {
     constructor (private readonly database: typeof db) {}

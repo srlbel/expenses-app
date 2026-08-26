@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
-import { Expense } from "../../domain/expense/expense";
-import { ExpenseInterface } from "../../domain/expense/expense.interface";
-import { db } from "../drizzle/db";
-import { expense } from "../drizzle/schema/expense";
+import { Expense } from "../../../domain/expense/expense";
+import { ExpenseInterface } from "../../../domain/expense/expense.interface";
+import { db } from "../db";
+import { expense } from "../schema/expense";
 
 export class ExpenseRepository implements ExpenseInterface {
     constructor (private readonly database: typeof db) {}
@@ -13,9 +13,7 @@ export class ExpenseRepository implements ExpenseInterface {
 
     async findById(id: string): Promise<Expense | undefined> {
         return await this.database.query.expense.findFirst({
-            where(fields, operators) {
-                operators.eq(fields.id, id)
-            },
+            where(fields, operators) { return operators.eq(fields.id, id)}
         })
     }
 

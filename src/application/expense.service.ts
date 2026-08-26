@@ -1,5 +1,5 @@
 import * as Expense from "../domain/expense/expense"
-import { ExpenseRepository } from "../infraestructure/query/expense.repository"
+import { ExpenseRepository } from "../infrastructure/drizzle/query/expense.repository"
 
 export class ExpenseService {
     constructor (
@@ -24,8 +24,8 @@ export class ExpenseService {
         return this.expenseRepository.save(expense);
     }
 
-    async updateExpense(entity: Expense.Expense): Promise<Expense.Expense> {
-        const expense = this.expenseRepository.findById(entity.id);
+    async updateExpense(entity: Expense.UpdateExpense, id: string): Promise<Expense.Expense> {
+        const expense = await this.expenseRepository.findById(id);
         
         if (!expense) throw new Error("Entity not found");
 

@@ -1,52 +1,50 @@
 import { NotFoundError } from "@/application/errors/not-found.error";
-import * as Expense from "@/domain/expense/expense"
-import { ExpenseRepository } from "@/infrastructure/drizzle/query/expense.repository"
+import * as Expense from "@/domain/expense/expense";
+import { ExpenseRepository } from "@/infrastructure/drizzle/query/expense.repository";
 
 export class ExpenseService {
-    constructor (
-        private readonly expenseRepository: ExpenseRepository
-    ) {}
+	constructor(private readonly expenseRepository: ExpenseRepository) {}
 
-    async getAllExpenses(): Promise<Expense.Expense[]> {
-        return await this.expenseRepository.findAll()
-    }
+	async getAllExpenses(): Promise<Expense.Expense[]> {
+		return await this.expenseRepository.findAll();
+	}
 
-    async getExpense(id: string): Promise<Expense.Expense> {
-        const expense = await this.expenseRepository.findById(id);
+	async getExpense(id: string): Promise<Expense.Expense> {
+		const expense = await this.expenseRepository.findById(id);
 
-        if (!expense) throw new NotFoundError("Expense not found");
+		if (!expense) throw new NotFoundError("Expense not found");
 
-        return expense;
-    }
+		return expense;
+	}
 
-    async createExpense(newEntity: Expense.CreateExpense): Promise<Expense.Expense> {
-        const expense: Expense.Expense = {
-            ...newEntity,
-            id: Bun.randomUUIDv7(),
-            createdAt: new Date().toISOString()
-        }
+	async createExpense(newEntity: Expense.CreateExpense): Promise<Expense.Expense> {
+		const expense: Expense.Expense = {
+			...newEntity,
+			id: Bun.randomUUIDv7(),
+			createdAt: new Date().toISOString(),
+		};
 
-        return this.expenseRepository.save(expense);
-    }
+		return this.expenseRepository.save(expense);
+	}
 
-    async updateExpense(entity: Expense.UpdateExpense, id: string): Promise<Expense.Expense> {
-        const expense = await this.expenseRepository.findById(id);
-        
-        if (!expense) throw new NotFoundError("Expense not found");
+	async updateExpense(entity: Expense.UpdateExpense, id: string): Promise<Expense.Expense> {
+		const expense = await this.expenseRepository.findById(id);
 
-        const updatedExpense: Expense.Expense = {
-            ...expense,
-            ...entity
-        }
+		if (!expense) throw new NotFoundError("Expense not found");
 
-        return this.expenseRepository.update(updatedExpense);
-    }
+		const updatedExpense: Expense.Expense = {
+			...expense,
+			...entity,
+		};
 
-    async deleteExpense(id: string): Promise<void> {
-        const expense = await this.expenseRepository.findById(id);
-        
-        if (!expense) throw new NotFoundError("Expense not found");
+		return this.expenseRepository.update(updatedExpense);
+	}
 
-        await this.expenseRepository.delete(id)
-    }
+	async deleteExpense(id: string): Promise<void> {
+		const expense = await this.expenseRepository.findById(id);
+
+		if (!expense) throw new NotFoundError("Expense not found");
+
+		await this.expenseRepository.delete(id);
+	}
 }

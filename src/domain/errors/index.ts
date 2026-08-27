@@ -1,5 +1,5 @@
 import { notFoundResponse } from "./notFound";
 
 export const Errors = {
-    notFoundResponse
+	notFoundResponse,
 } as const;

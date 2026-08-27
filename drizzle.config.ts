@@ -2,10 +2,10 @@ import { defineConfig } from "drizzle-kit";
 import { CONFIG } from "./src/config";
 
 export default defineConfig({
-    out: "./drizzle",
-    dialect: "sqlite",
-    schema: "src/infraestructure/drizzle/schema",
-    dbCredentials: {
-        url: CONFIG.database_file,
-    }
-})
+	out: "./drizzle",
+	dialect: "sqlite",
+	schema: "src/infraestructure/drizzle/schema",
+	dbCredentials: {
+		url: CONFIG.database_file,
+	},
+});

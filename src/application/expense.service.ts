@@ -1,4 +1,4 @@
-import { NotFoundError } from "elysia";
+import { NotFoundError } from "../application/errors/not-found.error";
 import * as Expense from "../domain/expense/expense"
 import { ExpenseRepository } from "../infrastructure/drizzle/query/expense.repository"
 

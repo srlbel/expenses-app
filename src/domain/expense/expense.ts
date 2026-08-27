@@ -1,5 +1,5 @@
 import { t } from "elysia";
-import { expense as expenseTable} from "../../infrastructure/drizzle/schema/expense";
+import { expense as expenseTable} from "@/infrastructure/drizzle/schema/expense";
 import { createSelectSchema } from "drizzle-typebox";
 
 export const expense = createSelectSchema(expenseTable, {

@@ -1,6 +1,6 @@
 import Elysia from "elysia";
-import { expensesRoutes } from "./api/expense.routes";
-import { AppError } from "../application/errors/app.error";
+import { expensesRoutes } from "@/presentation/api/expense.routes";
+import { AppError } from "@/application/errors/app.error";
 
 export const apiRoutes = new Elysia({ prefix: '/api' })
     .onError(({ error, status }) => {

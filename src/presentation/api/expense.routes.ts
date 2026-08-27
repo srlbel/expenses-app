@@ -1,9 +1,9 @@
 import { Elysia, t } from "elysia";
-import { ExpenseService } from "../../application/expense.service";
-import { ExpenseRepository } from "../../infrastructure/drizzle/query/expense.repository";
-import { db } from "../../infrastructure/drizzle/db";
-import * as Expense from "../../domain/expense/expense";
-import { Errors } from "../../domain/errors";
+import { ExpenseService } from "@/application/expense.service";
+import { ExpenseRepository } from "@/infrastructure/drizzle/query/expense.repository";
+import { db } from "@/infrastructure/drizzle/db";
+import * as Expense from "@/domain/expense/expense";
+import { Errors } from "@/domain/errors";
 
 const repository = new ExpenseRepository(db);
 const service = new ExpenseService(repository);

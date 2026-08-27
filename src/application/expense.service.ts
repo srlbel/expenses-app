@@ -1,6 +1,6 @@
-import { NotFoundError } from "../application/errors/not-found.error";
-import * as Expense from "../domain/expense/expense"
-import { ExpenseRepository } from "../infrastructure/drizzle/query/expense.repository"
+import { NotFoundError } from "@/application/errors/not-found.error";
+import * as Expense from "@/domain/expense/expense"
+import { ExpenseRepository } from "@/infrastructure/drizzle/query/expense.repository"
 
 export class ExpenseService {
     constructor (

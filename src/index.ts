@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import { openapi } from "@elysia/openapi";
-import { CONFIG } from "./config";
-import { apiRoutes } from "./presentation/api";
+import { CONFIG } from "@/config";
+import { apiRoutes } from "@/presentation/api";
 
 const app = new Elysia()
   .use(openapi())

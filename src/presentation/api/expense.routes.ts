@@ -13,11 +13,11 @@ export const expensesRoutes = new Elysia({
 	name: "Expenses",
 	tags: ["Expenses"],
 })
-    .model({
-        Expense: Expense.expense,
-        CreateExpense: Expense.createExpense,
-        UpdateExpense: Expense.updateExpense
-    })
+	.model({
+		Expense: Expense.expense,
+		CreateExpense: Expense.createExpense,
+		UpdateExpense: Expense.updateExpense,
+	})
 	.get("/", async () => await service.getAllExpenses(), {
 		detail: {
 			summary: "List all expenses",

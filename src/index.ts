@@ -1,18 +1,17 @@
 import { Elysia } from "elysia";
-import { openapi, fromTypes } from "@elysia/openapi";
+import { openapi } from "@elysia/openapi";
 import { CONFIG } from "@/config";
 import { apiRoutes } from "@/presentation/api";
 
 const app = new Elysia()
 	.use(
 		openapi({
-			references: fromTypes(),
-            documentation: {
-                info: {
-                    title: "Expenses App Documentation",
-                    version: "1.0.0"
-                }
-            }
+			documentation: {
+				info: {
+					title: "Expenses App Documentation",
+					version: "1.0.0",
+				},
+			},
 		}),
 	)
 	.use(apiRoutes)

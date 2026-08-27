@@ -1,3 +1,4 @@
+import { NotFoundError } from "elysia";
 import * as Expense from "../domain/expense/expense"
 import { ExpenseRepository } from "../infrastructure/drizzle/query/expense.repository"
 
@@ -7,11 +8,15 @@ export class ExpenseService {
     ) {}
 
     async getAllExpenses(): Promise<Expense.Expense[]> {
-        return this.expenseRepository.findAll()
+        return await this.expenseRepository.findAll()
     }
 
-    async getExpense(id: string): Promise<Expense.Expense | undefined> {
-        return this.expenseRepository.findById(id);
+    async getExpense(id: string): Promise<Expense.Expense> {
+        const expense = await this.expenseRepository.findById(id);
+
+        if (!expense) throw new NotFoundError("Expense not found");
+
+        return expense;
     }
 
     async createExpense(newEntity: Expense.CreateExpense): Promise<Expense.Expense> {
@@ -27,7 +32,7 @@ export class ExpenseService {
     async updateExpense(entity: Expense.UpdateExpense, id: string): Promise<Expense.Expense> {
         const expense = await this.expenseRepository.findById(id);
         
-        if (!expense) throw new Error("Entity not found");
+        if (!expense) throw new NotFoundError("Expense not found");
 
         const updatedExpense: Expense.Expense = {
             ...expense,
@@ -38,9 +43,9 @@ export class ExpenseService {
     }
 
     async deleteExpense(id: string): Promise<void> {
-        const expense = this.expenseRepository.findById(id);
+        const expense = await this.expenseRepository.findById(id);
         
-        if (!expense) throw new Error("Entity not found");
+        if (!expense) throw new NotFoundError("Expense not found");
 
         await this.expenseRepository.delete(id)
     }

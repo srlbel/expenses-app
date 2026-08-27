@@ -3,6 +3,7 @@ import { ExpenseService } from "../../application/expense.service";
 import { ExpenseRepository } from "../../infrastructure/drizzle/query/expense.repository";
 import { db } from "../../infrastructure/drizzle/db";
 import * as Expense from "../../domain/expense/expense";
+import { Errors } from "../../domain/errors";
 
 const repository = new ExpenseRepository(db);
 const service = new ExpenseService(repository);
@@ -16,17 +17,14 @@ export const expensesRoutes = new Elysia({ prefix: '/expenses', name: 'Expenses'
                 summary: "List all expenses"
             }, 
             response: {
-                [200]: t.Array(Expense.expense)
+                200: t.Array(Expense.expense)
             }
         }
     )
-    .get('/:id', 
-        async ({ params: { id }, status }) => { 
-            const entity = await service.getExpense(id);
-            if (entity == undefined) { 
-                return status(404, "Not Found");
-            }
-            return entity;
+    .get(
+        '/:id', 
+        async ({ params: { id } }) => {
+            return await service.getExpense(id)
         },
         {
             detail: {
@@ -36,8 +34,8 @@ export const expensesRoutes = new Elysia({ prefix: '/expenses', name: 'Expenses'
                 id: t.String({ format: "uuid" })
             }),
             response: {
-                [200]: Expense.expense,
-                [404]: t.Literal("Not Found")
+                200: Expense.expense,
+                404: Errors.notFoundResponse,
             }
         }
     )
@@ -53,18 +51,14 @@ export const expensesRoutes = new Elysia({ prefix: '/expenses', name: 'Expenses'
             },
             body: Expense.createExpense,
             response: {
-                [201]: Expense.expense
+                201: Expense.expense
             }
         }
     )
     .put(
         '/:id',
-        async ({ body, params: { id }, status }) => {
-            const entity = await service.updateExpense(body, id);
-            if (entity == undefined) {
-                return status(404, "Not Found")
-            }
-            return status(200, entity);
+        async ({ body, params: { id } }) => {
+            return await service.updateExpense(body, id);
         },
         {
             detail: {
@@ -75,8 +69,8 @@ export const expensesRoutes = new Elysia({ prefix: '/expenses', name: 'Expenses'
                 id: t.String({ format: "uuid" })
             }),
             response: {
-                [200]: Expense.expense,
-                [404]: t.Literal("Not Found")
+                200: Expense.expense,
+                404: Errors.notFoundResponse,
             }
         }
     )
@@ -84,7 +78,7 @@ export const expensesRoutes = new Elysia({ prefix: '/expenses', name: 'Expenses'
         '/:id',
         async ({ params: { id }, status }) => {
             await service.deleteExpense(id);
-            return status(204, "");
+            return status(204, undefined);
         },
         {
             detail: {
@@ -94,7 +88,7 @@ export const expensesRoutes = new Elysia({ prefix: '/expenses', name: 'Expenses'
                 id: t.String({ format: "uuid" })
             }),
             response: {
-                [204]: t.Literal("")
+                204: t.Void()
             }
         }
     )

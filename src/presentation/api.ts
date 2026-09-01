@@ -1,6 +1,7 @@
 import Elysia from "elysia";
 import { expensesRoutes } from "@/presentation/api/expense.routes";
 import { AppError } from "@/application/errors/app.error";
+import { authRoutes } from "./api/auth.routes";
 
 export const apiRoutes = new Elysia({ prefix: "/api" })
 	.onError(({ error, status }) => {
@@ -16,4 +17,5 @@ export const apiRoutes = new Elysia({ prefix: "/api" })
 			message: "Internal server error",
 		});
 	})
-	.use(expensesRoutes);
+	.use(expensesRoutes)
+	.use(authRoutes);

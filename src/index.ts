@@ -1,21 +1,10 @@
 import { Elysia } from "elysia";
-import { openapi } from "@elysia/openapi";
 import { CONFIG } from "@/config";
 import { apiRoutes } from "@/presentation/api";
+import { openAPI } from "./presentation/api/openapi.routes";
+import { corsHandler } from "./infrastructure/cors/cors";
 
-const app = new Elysia()
-	.use(
-		openapi({
-			documentation: {
-				info: {
-					title: "Expenses App Documentation",
-					version: "1.0.0",
-				},
-			},
-		}),
-	)
-	.use(apiRoutes)
-	.listen(CONFIG.port);
+const app = new Elysia().use(corsHandler).use(openAPI).use(apiRoutes).listen(CONFIG.port);
 
 export type App = typeof app;
 

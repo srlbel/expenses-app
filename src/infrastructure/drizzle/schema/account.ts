@@ -1,8 +1,7 @@
 import { user } from "./user";
-import { sqliteTable } from "drizzle-orm/sqlite-core";
 import * as t from "drizzle-orm/sqlite-core";
 
-export const account = sqliteTable(
+export const account = t.sqliteTable(
 	"account",
 	{
 		id: t.text("id").primaryKey(),

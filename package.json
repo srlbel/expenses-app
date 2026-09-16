@@ -9,6 +9,8 @@
 		"lint:fix": "oxlint --fix",
 		"fmt": "oxfmt",
 		"fmt:check": "oxfmt --check",
+		"db:studio": "drizzle-kit studio",
+		"db:push": "drizzle-kit push",
 		"dev": "bun run --watch src/index.ts"
 	},
 	"dependencies": {

@@ -17,5 +17,5 @@ export const apiRoutes = new Elysia({ prefix: "/api" })
 			message: "Internal server error",
 		});
 	})
-	.use(expensesRoutes)
-	.use(authRoutes);
+	.use(authRoutes)
+	.use(expensesRoutes);

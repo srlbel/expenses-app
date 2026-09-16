@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { Expense } from "@/domain/expense/expense";
 import { ExpenseInterface } from "@/domain/expense/expense.interface";
 import { db } from "@/infrastructure/drizzle/db";
@@ -7,15 +7,15 @@ import { expense } from "@/infrastructure/drizzle/schema/expense";
 export class ExpenseRepository implements ExpenseInterface {
 	constructor(private readonly database: typeof db) {}
 
-	async findAll(): Promise<Expense[]> {
-		return await this.database.query.expense.findMany({});
+	async findAll(userId: string): Promise<Expense[]> {
+		return await this.database.query.expense.findMany({
+			where: eq(expense.userId, userId),
+		});
 	}
 
-	async findById(id: string): Promise<Expense | undefined> {
+	async findById(id: string, userId: string): Promise<Expense | undefined> {
 		return await this.database.query.expense.findFirst({
-			where(fields, operators) {
-				return operators.eq(fields.id, id);
-			},
+			where: and(eq(expense.id, id), eq(expense.userId, userId)),
 		});
 	}
 
@@ -28,12 +28,14 @@ export class ExpenseRepository implements ExpenseInterface {
 		const [updatedEntity] = await this.database
 			.update(expense)
 			.set(entity)
-			.where(eq(expense.id, entity.id))
+			.where(and(eq(expense.id, entity.id), eq(expense.userId, entity.userId)))
 			.returning();
 		return updatedEntity;
 	}
 
-	async delete(id: string): Promise<void> {
-		return await this.database.delete(expense).where(eq(expense.id, id));
+	async delete(id: string, userId: string): Promise<void> {
+		return await this.database
+			.delete(expense)
+			.where(and(eq(expense.id, id), eq(expense.userId, userId)));
 	}
 }

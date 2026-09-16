@@ -1,13 +1,8 @@
 import { Elysia, t } from "elysia";
-import { ExpenseService } from "@/application/expense.service";
-import { ExpenseRepository } from "@/infrastructure/drizzle/query/expense.repository";
-import { db } from "@/infrastructure/drizzle/db";
 import * as Expense from "@/domain/expense/expense";
 import { Errors } from "@/domain/errors";
 import { authRoutes as AuthHandler } from "./auth.routes";
-
-const repository = new ExpenseRepository(db);
-const service = new ExpenseService(repository);
+import { dependencies } from "./dependencies";
 
 export const expensesRoutes = new Elysia({
 	prefix: "/expenses",
@@ -15,12 +10,13 @@ export const expensesRoutes = new Elysia({
 	tags: ["Expenses"],
 })
 	.use(AuthHandler)
+	.use(dependencies)
 	.model({
 		Expense: Expense.expense,
 		CreateExpense: Expense.createExpense,
 		UpdateExpense: Expense.updateExpense,
 	})
-	.get("/", async ({ user }) => await service.getAllExpenses(user.id), {
+	.get("/", async ({ user, expenseService }) => await expenseService.getAllExpenses(user.id), {
 		auth: true,
 		detail: {
 			summary: "List all expenses",
@@ -32,8 +28,8 @@ export const expensesRoutes = new Elysia({
 	})
 	.get(
 		"/:id",
-		async ({ params: { id }, user }) => {
-			return await service.getExpense(id, user.id);
+		async ({ params: { id }, user, expenseService }) => {
+			return await expenseService.getExpense(id, user.id);
 		},
 		{
 			auth: true,
@@ -52,8 +48,8 @@ export const expensesRoutes = new Elysia({
 	)
 	.post(
 		"/",
-		async ({ body, status, user }) => {
-			const entity = await service.createExpense(body, user.id);
+		async ({ body, status, user, expenseService }) => {
+			const entity = await expenseService.createExpense(body, user.id);
 			return status(201, entity);
 		},
 		{
@@ -70,8 +66,8 @@ export const expensesRoutes = new Elysia({
 	)
 	.put(
 		"/:id",
-		async ({ body, params: { id }, user }) => {
-			return await service.updateExpense(body, id, user.id);
+		async ({ body, params: { id }, user, expenseService }) => {
+			return await expenseService.updateExpense(body, id, user.id);
 		},
 		{
 			auth: true,
@@ -91,8 +87,8 @@ export const expensesRoutes = new Elysia({
 	)
 	.delete(
 		"/:id",
-		async ({ params: { id }, status, user }) => {
-			await service.deleteExpense(id, user.id);
+		async ({ params: { id }, status, user, expenseService }) => {
+			await expenseService.deleteExpense(id, user.id);
 			return status(204, undefined);
 		},
 		{

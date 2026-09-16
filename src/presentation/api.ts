@@ -2,6 +2,7 @@ import Elysia from "elysia";
 import { expensesRoutes } from "@/presentation/api/expense.routes";
 import { AppError } from "@/application/errors/app.error";
 import { authRoutes } from "./api/auth.routes";
+import { categoryRoutes } from "./api/category.routes";
 
 export const apiRoutes = new Elysia({ prefix: "/api" })
 	.onError(({ error, status }) => {
@@ -18,4 +19,5 @@ export const apiRoutes = new Elysia({ prefix: "/api" })
 		});
 	})
 	.use(authRoutes)
-	.use(expensesRoutes);
+	.use(expensesRoutes)
+	.use(categoryRoutes);

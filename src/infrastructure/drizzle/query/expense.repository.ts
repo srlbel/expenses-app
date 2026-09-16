@@ -1,12 +1,11 @@
 import { eq, and } from "drizzle-orm";
 import { Expense } from "@/domain/expense/expense";
 import { ExpenseInterface } from "@/domain/expense/expense.interface";
-import { db } from "@/infrastructure/drizzle/db";
 import { expense } from "@/infrastructure/drizzle/schema/expense";
+import { category } from "../schema/category";
+import { BaseRepository } from "./base.repository";
 
-export class ExpenseRepository implements ExpenseInterface {
-	constructor(private readonly database: typeof db) {}
-
+export class ExpenseRepository extends BaseRepository implements ExpenseInterface {
 	async findAll(userId: string): Promise<Expense[]> {
 		return await this.database.query.expense.findMany({
 			where: eq(expense.userId, userId),
@@ -37,5 +36,11 @@ export class ExpenseRepository implements ExpenseInterface {
 		return await this.database
 			.delete(expense)
 			.where(and(eq(expense.id, id), eq(expense.userId, userId)));
+	}
+
+	async findAllExpensesCategoryById(id: string, userId: string): Promise<Expense[]> {
+		return await this.database.query.expense.findMany({
+			where: and(eq(category.id, id), eq(category.userId, userId)),
+		});
 	}
 }

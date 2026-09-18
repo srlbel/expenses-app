@@ -11,12 +11,7 @@
 		"lint:quiet": "oxlint --quiet .",
 		"lint:fix": "oxlint --fix .",
 		"fmt": "oxfmt .",
-		"fmt:check": "oxfmt --check .",
-		"backend:dev": "cd apps/backend && bun run dev",
-		"db:studio": "bun --cwd apps/backend run db:studio",
-		"db:push": "bun --cwd apps/backend run db:push",
-		"db:generate": "bun --cwd apps/backend run db:generate",
-		"db:migrate": "bun --cwd apps/backend run db:migrate"
+		"fmt:check": "oxfmt --check ."
 	},
 	"devDependencies": {
 		"oxfmt": "^0.65.0",
